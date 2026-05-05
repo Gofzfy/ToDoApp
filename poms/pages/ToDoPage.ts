@@ -42,7 +42,7 @@ export class ToDoPage {
         return this.getToDoItemsByIndex(itemsCount - 1);
     }
 
-    async checkToDoItemsVisible(expectedCount: number, visible = true): Promise<void> {
+    async checkToDoItemsVisible(expectedCount: number): Promise<void> {
         //const todoItems: TodoItem[] = this.main.getByTestId('todo-item');
         const itemCount = await this.main.getByTestId('todo-item').count();
         expect(itemCount).toBe(expectedCount);

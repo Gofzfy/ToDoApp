@@ -59,7 +59,7 @@ test('Create two items, activate one, clear completed button test', async ({ pag
   await firstCreatedToDo.checkCardVisible()
 });
 
-test('Create two items, activate one, use filer completed test', async ({ page }) => {
+test('Create two items, activate one, use filter completed test', async ({ page }) => {
   const cardText = 'test text';
   const toDoPage = new ToDoPage(page);
   await toDoPage.goto();
