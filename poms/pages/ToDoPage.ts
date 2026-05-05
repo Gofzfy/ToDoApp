@@ -8,6 +8,7 @@ export class ToDoPage {
     readonly header: Locator;
     readonly main: Locator;
     readonly footer: Locator;
+    readonly filters: Locator;
     readonly todoItemInput: Locator;
     // readonly externalFooter;
 
@@ -16,6 +17,7 @@ export class ToDoPage {
         this.header = page.getByTestId('header');
         this.main = page.getByTestId('main');
         this.footer = page.getByTestId('footer');
+        this.filters = this.footer.locator('.filters');
         this.todoItemInput = this.header.getByTestId('text-input');
     }
 
@@ -40,11 +42,40 @@ export class ToDoPage {
         return this.getToDoItemsByIndex(itemsCount - 1);
     }
 
-    async checkToDoItemsVisible(expectedCount: number, visible = true): Promise<void> {
+    async checkToDoItemsVisible(expectedCount: number): Promise<void> {
         //const todoItems: TodoItem[] = this.main.getByTestId('todo-item');
         const itemCount = await this.main.getByTestId('todo-item').count();
         expect(itemCount).toBe(expectedCount);
     }
 
+    async filterAllBtn(): Promise<void> {
+        const btn = this.filters.getByText('All');
+        await btn.click();
+        await expect(btn).toHaveClass('selected');
+    }
 
+    async filterActiveBtn(): Promise<void> {
+        const btn = this.filters.getByText('Active');
+        await btn.click();
+        await expect(btn).toHaveClass('selected');
+    }
+
+    async filterCompletedBtn(): Promise<void> {
+        const btn = this.filters.getByText('Completed');
+        await btn.click();
+        await expect(btn).toHaveClass('selected');
+    }
+
+    async filterClearBtn(): Promise<void> {
+        await this.footer.locator('.clear-completed').click();
+    }
+
+    async checkItemsLeftAmount(expectedItems: number): Promise<void> {
+        const itemsLeft = this.footer.locator('.todo-count');
+        await expect(itemsLeft).toContainText(`${expectedItems}`);
+    }
+
+    async checkActiveItems(): Promise<number> {
+        return await this.main.locator('[data-testid="todo-item"]:not(.completed)').count();
+    }
 }
